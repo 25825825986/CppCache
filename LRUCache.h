@@ -152,10 +152,10 @@ private:
 // 分片 LRU
 
 template<typename Key, typename Value>
-class KHashLruCaches
+class HashLruCaches
 {
 public:
-    KHashLruCaches(size_t capacity, int sliceNum)
+    HashLruCaches(size_t capacity, int sliceNum)
         : capacity_(capacity),
           sliceNum_(sliceNum > 0 ? sliceNum : std::thread::hardware_concurrency())
     {
