@@ -16,26 +16,26 @@ using namespace Cache;
 
 class Timer {
 public:
-    Timer() : start_(std::chrono::high_resolution_clock::now()) {}
+    Timer() : start_(chrono::high_resolution_clock::now()) {}
     
     double elapsed() {
-        auto now = std::chrono::high_resolution_clock::now();
-        return std::chrono::duration_cast<std::chrono::milliseconds>(now - start_).count();
+        auto now = chrono::high_resolution_clock::now();
+        return chrono::duration_cast<chrono::milliseconds>(now - start_).count();
     }
 
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+    chrono::time_point<chrono::high_resolution_clock> start_;
 };
 
 // 辅助函数：打印结果
-void printResults(const std::string& testName, int capacity, 
-                 const std::vector<int>& get_operations, 
-                 const std::vector<int>& hits) {
-    std::cout << "=== " << testName << " 结果汇总 ===" << std::endl;
-    std::cout << "缓存大小: " << capacity << std::endl;
+void printResults(const string& testName, int capacity, 
+                 const vector<int>& get_operations, 
+                 const vector<int>& hits) {
+    cout << "=== " << testName << " 结果汇总 ===" << std::endl;
+    cout << "缓存大小: " << capacity << std::endl;
     
     // 假设对应的算法名称已在测试函数中定义
-    std::vector<std::string> names;
+    vector<string> names;
     if (hits.size() == 3) {
         names = {"LRU", "LFU", "ARC"};
     } else if (hits.size() == 4) {
@@ -46,48 +46,48 @@ void printResults(const std::string& testName, int capacity,
     
     for (size_t i = 0; i < hits.size(); ++i) {
         double hitRate = 100.0 * hits[i] / get_operations[i];
-        std::cout << (i < names.size() ? names[i] : "Algorithm " + std::to_string(i+1)) 
-                  << " - 命中率: " << std::fixed << std::setprecision(2) 
+        cout << (i < names.size() ? names[i] : "Algorithm " + to_string(i+1)) 
+                  << " - 命中率: " << fixed << setprecision(2) 
                   << hitRate << "% ";
         // 添加具体命中次数和总操作次数
-        std::cout << "(" << hits[i] << "/" << get_operations[i] << ")" << std::endl;
+        cout << "(" << hits[i] << "/" << get_operations[i] << ")" << endl;
     }
     
-    std::cout << std::endl;  // 添加空行，使输出更清晰
+    cout << endl;  // 添加空行，使输出更清晰
 }
 
 void testHotDataAccess() {
-    std::cout << "\n=== 测试场景1：热点数据访问测试 ===" << std::endl;
+    cout << "\n=== 测试场景1：热点数据访问测试 ===" << endl;
     
     const int CAPACITY = 20;         // 缓存容量
     const int OPERATIONS = 500000;   // 总操作次数
     const int HOT_KEYS = 20;         // 热点数据数量
     const int COLD_KEYS = 5000;      // 冷数据数量
     
-    Cache::LRUCache<int, std::string> lru(CAPACITY);
-    Cache::LFUCache<int, std::string> lfu(CAPACITY);
-    Cache::ArcCache<int, std::string> arc(CAPACITY);
+    LRUCache<int, string> lru(CAPACITY);
+    LFUCache<int, string> lfu(CAPACITY);
+    ArcCache<int, string> arc(CAPACITY);
     // 为LRU-K设置合适的参数：
     // - 主缓存容量与其他算法相同
     // - 历史记录容量设为可能访问的所有键数量
     // - k=2表示数据被访问2次后才会进入缓存，适合区分热点和冷数据
-    Cache::KLruKCache<int, std::string> lruk(CAPACITY, HOT_KEYS + COLD_KEYS, 2);
-    Cache::LFUCache<int, std::string> lfuAging(CAPACITY, 20000);
+    KLruKCache<int, string> lruk(CAPACITY, HOT_KEYS + COLD_KEYS, 2);
+    LFUCache<int, string> lfuAging(CAPACITY, 20000);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    random_device rd;
+    mt19937 gen(rd());
     
     // 基类指针指向派生类对象，添加LFU-Aging
-    std::array<Cache::CachePolicy<int, std::string>*, 5> caches = {&lru, &lfu, &arc, &lruk, &lfuAging};
-    std::vector<int> hits(5, 0);
-    std::vector<int> get_operations(5, 0);
-    std::vector<std::string> names = {"LRU", "LFU", "ARC", "LRU-K", "LFU-Aging"};
+    array<CachePolicy<int, string>*, 5> caches = {&lru, &lfu, &arc, &lruk, &lfuAging};
+    vector<int> hits(5, 0);
+    vector<int> get_operations(5, 0);
+    vector<string> names = {"LRU", "LFU", "ARC", "LRU-K", "LFU-Aging"};
 
     // 为所有的缓存对象进行相同的操作序列测试
     for (int i = 0; i < caches.size(); ++i) {
         // 先预热缓存，插入一些数据
         for (int key = 0; key < HOT_KEYS; ++key) {
-            std::string value = "value" + std::to_string(key);
+            string value = "value" + to_string(key);
             caches[i]->put(key, value);
         }
         
@@ -107,11 +107,11 @@ void testHotDataAccess() {
             
             if (isPut) {
                 // 执行put操作
-                std::string value = "value" + std::to_string(key) + "_v" + std::to_string(op % 100);
+                string value = "value" + to_string(key) + "_v" + to_string(op % 100);
                 caches[i]->put(key, value);
             } else {
                 // 执行get操作并记录命中情况
-                std::string result;
+                string result;
                 get_operations[i]++;
                 if (caches[i]->get(key, result)) {
                     hits[i]++;
@@ -125,34 +125,34 @@ void testHotDataAccess() {
 }
 
 void testLoopPattern() {
-    std::cout << "\n=== 测试场景2：循环扫描测试 ===" << std::endl;
+    cout << "\n=== 测试场景2：循环扫描测试 ===" << endl;
     
     const int CAPACITY = 50;          // 缓存容量
     const int LOOP_SIZE = 500;        // 循环范围大小
     const int OPERATIONS = 200000;    // 总操作次数
     
-    Cache::LRUCache<int, std::string> lru(CAPACITY);
-    Cache::LFUCache<int, std::string> lfu(CAPACITY);
-    Cache::ArcCache<int, std::string> arc(CAPACITY);
+    LRUCache<int, string> lru(CAPACITY);
+    LFUCache<int, string> lfu(CAPACITY);
+    ArcCache<int, string> arc(CAPACITY);
     // 为LRU-K设置合适的参数：
     // - 历史记录容量设为总循环大小的两倍，覆盖范围内和范围外的数据
     // - k=2，对于循环访问，这是一个合理的阈值
-    Cache::KLruKCache<int, std::string> lruk(CAPACITY, LOOP_SIZE * 2, 2);
-    Cache::LFUCache<int, std::string> lfuAging(CAPACITY, 3000);
+    KLruKCache<int, string> lruk(CAPACITY, LOOP_SIZE * 2, 2);
+    LFUCache<int, string> lfuAging(CAPACITY, 3000);
 
-    std::array<Cache::CachePolicy<int, std::string>*, 5> caches = {&lru, &lfu, &arc, &lruk, &lfuAging};
-    std::vector<int> hits(5, 0);
-    std::vector<int> get_operations(5, 0);
-    std::vector<std::string> names = {"LRU", "LFU", "ARC", "LRU-K", "LFU-Aging"};
+    array<CachePolicy<int, string>*, 5> caches = {&lru, &lfu, &arc, &lruk, &lfuAging};
+    vector<int> hits(5, 0);
+    vector<int> get_operations(5, 0);
+    vector<string> names = {"LRU", "LFU", "ARC", "LRU-K", "LFU-Aging"};
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    random_device rd;
+    mt19937 gen(rd());
 
     // 为每种缓存算法运行相同的测试
     for (int i = 0; i < caches.size(); ++i) {
         // 先预热一部分数据（只加载20%的数据）
         for (int key = 0; key < LOOP_SIZE / 5; ++key) {
-            std::string value = "loop" + std::to_string(key);
+            string value = "loop" + to_string(key);
             caches[i]->put(key, value);
         }
         
@@ -177,11 +177,11 @@ void testLoopPattern() {
             
             if (isPut) {
                 // 执行put操作，更新数据
-                std::string value = "loop" + std::to_string(key) + "_v" + std::to_string(op % 100);
+                string value = "loop" + to_string(key) + "_v" + to_string(op % 100);
                 caches[i]->put(key, value);
             } else {
                 // 执行get操作并记录命中情况
-                std::string result;
+                string result;
                 get_operations[i]++;
                 if (caches[i]->get(key, result)) {
                     hits[i]++;
@@ -194,30 +194,30 @@ void testLoopPattern() {
 }
 
 void testWorkloadShift() {
-    std::cout << "\n=== 测试场景3：工作负载剧烈变化测试 ===" << std::endl;
+    cout << "\n=== 测试场景3：工作负载剧烈变化测试 ===" << endl;
     
     const int CAPACITY = 30;            // 缓存容量
     const int OPERATIONS = 80000;       // 总操作次数
     const int PHASE_LENGTH = OPERATIONS / 5;  // 每个阶段的长度
     
-    Cache::LRUCache<int, std::string> lru(CAPACITY);
-    Cache::LFUCache<int, std::string> lfu(CAPACITY);
-    Cache::ArcCache<int, std::string> arc(CAPACITY);
-    Cache::KLruKCache<int, std::string> lruk(CAPACITY, 500, 2);
-    Cache::LFUCache<int, std::string> lfuAging(CAPACITY, 10000);
+    LRUCache<int, string> lru(CAPACITY);
+    LFUCache<int, string> lfu(CAPACITY);
+    ArcCache<int, string> arc(CAPACITY);
+    KLruKCache<int, string> lruk(CAPACITY, 500, 2);
+    LFUCache<int, string> lfuAging(CAPACITY, 10000);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::array<Cache::CachePolicy<int, std::string>*, 5> caches = {&lru, &lfu, &arc, &lruk, &lfuAging};
-    std::vector<int> hits(5, 0);
-    std::vector<int> get_operations(5, 0);
-    std::vector<std::string> names = {"LRU", "LFU", "ARC", "LRU-K", "LFU-Aging"};
+    random_device rd;
+    mt19937 gen(rd());
+    array<CachePolicy<int, string>*, 5> caches = {&lru, &lfu, &arc, &lruk, &lfuAging};
+    vector<int> hits(5, 0);
+    vector<int> get_operations(5, 0);
+    vector<string> names = {"LRU", "LFU", "ARC", "LRU-K", "LFU-Aging"};
 
     // 为每种缓存算法运行相同的测试
     for (int i = 0; i < caches.size(); ++i) { 
         // 先预热缓存，只插入少量初始数据
         for (int key = 0; key < 30; ++key) {
-            std::string value = "init" + std::to_string(key);
+            string value = "init" + to_string(key);
             caches[i]->put(key, value);
         }
         
@@ -265,11 +265,11 @@ void testWorkloadShift() {
             
             if (isPut) {
                 // 执行写操作
-                std::string value = "value" + std::to_string(key) + "_p" + std::to_string(phase);
+                string value = "value" + to_string(key) + "_p" + to_string(phase);
                 caches[i]->put(key, value);
             } else {
                 // 执行读操作并记录命中情况
-                std::string result;
+                string result;
                 get_operations[i]++;
                 if (caches[i]->get(key, result)) {
                     hits[i]++;
