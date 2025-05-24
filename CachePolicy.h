@@ -1,13 +1,13 @@
 #pragma once
 
-namespace KamaCache
+namespace Cache
 {
 
 template <typename Key, typename Value>
-class KICachePolicy
+class CachePolicy
 {
 public:
-    virtual ~KICachePolicy() {};
+    virtual ~CachePolicy() {};
 
     // 添加缓存接口
     virtual void put(Key key, Value value) = 0;
@@ -19,4 +19,4 @@ public:
 
 };
 
-} // namespace KamaCache
+} // namespace Cache

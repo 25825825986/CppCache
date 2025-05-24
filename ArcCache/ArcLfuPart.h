@@ -1,22 +1,24 @@
 #pragma once
 
-#include "KArcCacheNode.h"
+#include "ArcCacheNode.h"
 #include <unordered_map>
 #include <map>
 #include <mutex>
 
-namespace KamaCache 
+namespace Cache 
 {
 
 template<typename Key, typename Value>
 class ArcLfuPart 
 {
 public:
+    //重命名节点，节点智能指针，节点表，访问频率表，方便调用
     using NodeType = ArcNode<Key, Value>;
     using NodePtr = std::shared_ptr<NodeType>;
     using NodeMap = std::unordered_map<Key, NodePtr>;
     using FreqMap = std::map<size_t, std::list<NodePtr>>;
 
+    //构造函数，初始化缓存和"幽灵缓存"的容量，设定调整缓存策略的阈值，初始化最小访问频率
     explicit ArcLfuPart(size_t capacity, size_t transformThreshold)
         : capacity_(capacity)
         , ghostCapacity_(capacity)
@@ -26,24 +28,29 @@ public:
         initializeLists();
     }
 
+    //插入或者更新节点
     bool put(Key key, Value value) 
     {
         if (capacity_ == 0) 
             return false;
-
+        //对象加锁，防止并发读写
         std::lock_guard<std::mutex> lock(mutex_);
         auto it = mainCache_.find(key);
-        if (it != mainCache_.end()) 
+        //存在节点，直接更新
+        if (it != mainCache_.end())
         {
             return updateExistingNode(it->second, value);
         }
+        //不存在则插入节点
         return addNewNode(key, value);
     }
 
+    //访问节点
     bool get(Key key, Value& value) 
     {
         std::lock_guard<std::mutex> lock(mutex_);
         auto it = mainCache_.find(key);
+        //访问成功，更新访问频率
         if (it != mainCache_.end()) 
         {
             updateNodeFrequency(it->second);
@@ -53,6 +60,7 @@ public:
         return false;
     }
 
+    //检查幽灵缓存中是否存在节点
     bool checkGhost(Key key) 
     {
         auto it = ghostCache_.find(key);
@@ -65,6 +73,7 @@ public:
         return false;
     }
 
+    //增加缓存容量
     void increaseCapacity() { ++capacity_; }
     
     bool decreaseCapacity() 
@@ -79,6 +88,8 @@ public:
     }
 
 private:
+
+    //初始化"幽灵缓存"链表的头尾节点
     void initializeLists() 
     {
         ghostHead_ = std::make_shared<NodeType>();
@@ -87,6 +98,7 @@ private:
         ghostTail_->prev_ = ghostHead_;
     }
 
+    //更新存在节点的value值
     bool updateExistingNode(NodePtr node, const Value& value) 
     {
         node->setValue(value);
@@ -223,4 +235,4 @@ private:
     NodePtr ghostTail_;
 };
 
-} // namespace KamaCache
+} // namespace Cache
