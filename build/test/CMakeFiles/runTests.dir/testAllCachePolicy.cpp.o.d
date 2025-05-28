@@ -1,5 +1,5 @@
-CMakeFiles/main.dir/testAllCachePolicy.cpp.o: \
- /home/project/KamaCache/testAllCachePolicy.cpp \
+test/CMakeFiles/runTests.dir/testAllCachePolicy.cpp.o: \
+ /home/project/CppCache/test/testAllCachePolicy.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -209,8 +209,8 @@ CMakeFiles/main.dir/testAllCachePolicy.cpp.o: \
  /usr/include/c++/11/bits/node_handle.h \
  /usr/include/c++/11/bits/unordered_map.h \
  /usr/include/c++/11/bits/erase_if.h \
- /home/project/KamaCache/CachePolicy.h /home/project/KamaCache/LFUCache.h \
- /usr/include/c++/11/memory \
+ /home/project/CppCache/include/CachePolicy.h \
+ /home/project/CppCache/include/LFUCache.h /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bits/shared_ptr.h \
  /usr/include/c++/11/bits/shared_ptr_base.h \
@@ -225,11 +225,12 @@ CMakeFiles/main.dir/testAllCachePolicy.cpp.o: \
  /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
- /home/project/KamaCache/LRUCache.h /usr/include/c++/11/list \
+ /home/project/CppCache/include/LRUCache.h /usr/include/c++/11/list \
  /usr/include/c++/11/bits/stl_list.h /usr/include/c++/11/bits/list.tcc \
- /home/project/KamaCache/ArcCache/ArcCache.h \
- /home/project/KamaCache/ArcCache/ArcLruPart.h \
- /home/project/KamaCache/ArcCache/ArcCacheNode.h \
- /home/project/KamaCache/ArcCache/ArcLfuPart.h /usr/include/c++/11/map \
- /usr/include/c++/11/bits/stl_tree.h /usr/include/c++/11/bits/stl_map.h \
+ /home/project/CppCache/include/ArcCache/ArcCache.h \
+ /home/project/CppCache/include/ArcCache/ArcLruPart.h \
+ /home/project/CppCache/include/ArcCache/ArcCacheNode.h \
+ /home/project/CppCache/include/ArcCache/ArcLfuPart.h \
+ /usr/include/c++/11/map /usr/include/c++/11/bits/stl_tree.h \
+ /usr/include/c++/11/bits/stl_map.h \
  /usr/include/c++/11/bits/stl_multimap.h

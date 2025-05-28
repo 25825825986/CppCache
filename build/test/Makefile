@@ -97,14 +97,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles /home/project/CppCache/build//CMakeFiles/progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
+	cd /home/project/CppCache/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles /home/project/CppCache/build/test//CMakeFiles/progress.marks
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/clean
 .PHONY : clean
 
 # The main clean target
@@ -113,68 +113,56 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/project/CppCache/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named main
+# Convenience name for target.
+test/CMakeFiles/runTests.dir/rule:
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/runTests.dir/rule
+.PHONY : test/CMakeFiles/runTests.dir/rule
 
-# Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
-
-#=============================================================================
-# Target rules for targets named runTests
-
-# Build rule for target.
-runTests: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 runTests
+# Convenience name for target.
+runTests: test/CMakeFiles/runTests.dir/rule
 .PHONY : runTests
 
 # fast build rule for target.
 runTests/fast:
-	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/build
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/build
 .PHONY : runTests/fast
 
-test/testAllCachePolicy.o: test/testAllCachePolicy.cpp.o
-.PHONY : test/testAllCachePolicy.o
+testAllCachePolicy.o: testAllCachePolicy.cpp.o
+.PHONY : testAllCachePolicy.o
 
 # target to build an object file
-test/testAllCachePolicy.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/test/testAllCachePolicy.cpp.o
-.PHONY : test/testAllCachePolicy.cpp.o
+testAllCachePolicy.cpp.o:
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/testAllCachePolicy.cpp.o
+.PHONY : testAllCachePolicy.cpp.o
 
-test/testAllCachePolicy.i: test/testAllCachePolicy.cpp.i
-.PHONY : test/testAllCachePolicy.i
+testAllCachePolicy.i: testAllCachePolicy.cpp.i
+.PHONY : testAllCachePolicy.i
 
 # target to preprocess a source file
-test/testAllCachePolicy.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/test/testAllCachePolicy.cpp.i
-.PHONY : test/testAllCachePolicy.cpp.i
+testAllCachePolicy.cpp.i:
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/testAllCachePolicy.cpp.i
+.PHONY : testAllCachePolicy.cpp.i
 
-test/testAllCachePolicy.s: test/testAllCachePolicy.cpp.s
-.PHONY : test/testAllCachePolicy.s
+testAllCachePolicy.s: testAllCachePolicy.cpp.s
+.PHONY : testAllCachePolicy.s
 
 # target to generate assembly for a file
-test/testAllCachePolicy.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/test/testAllCachePolicy.cpp.s
-.PHONY : test/testAllCachePolicy.cpp.s
+testAllCachePolicy.cpp.s:
+	cd /home/project/CppCache/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/testAllCachePolicy.cpp.s
+.PHONY : testAllCachePolicy.cpp.s
 
 # Help Target
 help:
@@ -185,11 +173,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... main"
 	@echo "... runTests"
-	@echo "... test/testAllCachePolicy.o"
-	@echo "... test/testAllCachePolicy.i"
-	@echo "... test/testAllCachePolicy.s"
+	@echo "... testAllCachePolicy.o"
+	@echo "... testAllCachePolicy.i"
+	@echo "... testAllCachePolicy.s"
 .PHONY : help
 
 
@@ -201,6 +188,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/project/CppCache/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

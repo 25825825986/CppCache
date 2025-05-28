@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/project/CppCache/test/testAllCachePolicy.cpp" "CMakeFiles/main.dir/test/testAllCachePolicy.cpp.o" "gcc" "CMakeFiles/main.dir/test/testAllCachePolicy.cpp.o.d"
+  "/home/project/CppCache/test/testAllCachePolicy.cpp" "test/CMakeFiles/runTests.dir/testAllCachePolicy.cpp.o" "gcc" "test/CMakeFiles/runTests.dir/testAllCachePolicy.cpp.o.d"
   )
 
 # Targets to which this target links.

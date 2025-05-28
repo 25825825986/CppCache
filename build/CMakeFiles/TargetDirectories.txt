@@ -1,3 +1,8 @@
-/home/project/KamaCache/build/CMakeFiles/main.dir
-/home/project/KamaCache/build/CMakeFiles/edit_cache.dir
-/home/project/KamaCache/build/CMakeFiles/rebuild_cache.dir
+/home/project/CppCache/build/CMakeFiles/main.dir
+/home/project/CppCache/build/CMakeFiles/test.dir
+/home/project/CppCache/build/CMakeFiles/edit_cache.dir
+/home/project/CppCache/build/CMakeFiles/rebuild_cache.dir
+/home/project/CppCache/build/test/CMakeFiles/runTests.dir
+/home/project/CppCache/build/test/CMakeFiles/test.dir
+/home/project/CppCache/build/test/CMakeFiles/edit_cache.dir
+/home/project/CppCache/build/test/CMakeFiles/rebuild_cache.dir

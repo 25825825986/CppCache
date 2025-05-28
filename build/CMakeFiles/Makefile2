@@ -54,25 +54,42 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/project/KamaCache
+CMAKE_SOURCE_DIR = /home/project/CppCache
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/project/KamaCache/build
+CMAKE_BINARY_DIR = /home/project/CppCache/build
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
 all: CMakeFiles/main.dir/all
+all: test/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: test/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/main.dir/clean
+clean: test/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory test
+
+# Recursive "all" directory target.
+test/all: test/CMakeFiles/runTests.dir/all
+.PHONY : test/all
+
+# Recursive "preinstall" directory target.
+test/preinstall:
+.PHONY : test/preinstall
+
+# Recursive "clean" directory target.
+test/clean: test/CMakeFiles/runTests.dir/clean
+.PHONY : test/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/main.dir
@@ -81,14 +98,14 @@ clean: CMakeFiles/main.dir/clean
 CMakeFiles/main.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/project/KamaCache/build/CMakeFiles --progress-num=1,2 "Built target main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/project/CppCache/build/CMakeFiles --progress-num=1,2 "Built target main"
 .PHONY : CMakeFiles/main.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/KamaCache/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/KamaCache/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles 0
 .PHONY : CMakeFiles/main.dir/rule
 
 # Convenience name for target.
@@ -99,6 +116,32 @@ main: CMakeFiles/main.dir/rule
 CMakeFiles/main.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
 .PHONY : CMakeFiles/main.dir/clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/runTests.dir
+
+# All Build rule for target.
+test/CMakeFiles/runTests.dir/all:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/depend
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/project/CppCache/build/CMakeFiles --progress-num=3,4 "Built target runTests"
+.PHONY : test/CMakeFiles/runTests.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/runTests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/runTests.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/project/CppCache/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/runTests.dir/rule
+
+# Convenience name for target.
+runTests: test/CMakeFiles/runTests.dir/rule
+.PHONY : runTests
+
+# clean rule for target.
+test/CMakeFiles/runTests.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/runTests.dir/build.make test/CMakeFiles/runTests.dir/clean
+.PHONY : test/CMakeFiles/runTests.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

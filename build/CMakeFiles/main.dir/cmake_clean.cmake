@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/main.dir/testAllCachePolicy.cpp.o"
-  "CMakeFiles/main.dir/testAllCachePolicy.cpp.o.d"
+  "CMakeFiles/main.dir/test/testAllCachePolicy.cpp.o"
+  "CMakeFiles/main.dir/test/testAllCachePolicy.cpp.o.d"
   "main"
   "main.pdb"
 )
