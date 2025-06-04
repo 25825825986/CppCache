@@ -34,7 +34,7 @@ void printResults(const string& testName, int capacity,
     cout << "=== " << testName << " 结果汇总 ===" << std::endl;
     cout << "缓存大小: " << capacity << std::endl;
     
-    // 假设对应的算法名称已在测试函数中定义
+    // 对应的算法名称已在测试函数中定义
     vector<string> names;
     if (hits.size() == 3) {
         names = {"LRU", "LFU", "ARC"};
