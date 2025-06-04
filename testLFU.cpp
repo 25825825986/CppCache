@@ -113,7 +113,7 @@ bool testZeroCapacity() {
     return true;
 }
 
-// 测试5: 大量数据测试
+// 测试5: 大量数据测试  
 bool testLargeDataSet() {
     LFUCache<int, int> cache(1000);
     
@@ -140,7 +140,7 @@ bool testLargeDataSet() {
     return true;
 }
 
-// 测试6: 复杂的LFU场景
+// 测试6: 复杂的LFU场景（修正版）
 bool testComplexLFUScenario() {
     LFUCache<int, string> cache(3);
     
@@ -152,25 +152,36 @@ bool testComplexLFUScenario() {
     string value;
     
     // 访问模式：key=1访问5次，key=2访问3次，key=3访问1次
+    // 此时频率：key=1(freq=6), key=2(freq=4), key=3(freq=2)
     for (int i = 0; i < 5; ++i) cache.get(1, value);
     for (int i = 0; i < 3; ++i) cache.get(2, value);
     cache.get(3, value);
     
-    // 添加新项，应该淘汰访问频率最低的key=3
+    // 添加新项，应该淘汰访问频率最低的key=3 (freq=2)
     cache.put(4, "four");
     
     bool found = cache.get(3, value);
     if (found) return false;  // key=3应该被淘汰
     
-    // 再添加一项，应该淘汰key=2
+    // 此时状态：key=1(freq=6), key=2(freq=4), key=4(freq=1)
+    // 再添加一项，应该淘汰key=4 (freq=1)，而不是key=2 (freq=4)
     cache.put(5, "five");
     
+    // key=4应该被淘汰（频率1 < key=2的频率4）
+    found = cache.get(4, value);
+    if (found) return false;  // key=4应该被淘汰
+    
+    // key=2应该仍然存在
     found = cache.get(2, value);
-    if (found) return false;  // key=2应该被淘汰
+    if (!found || value != "two") return false;
     
     // key=1应该仍然存在
     found = cache.get(1, value);
     if (!found || value != "one") return false;
+    
+    // key=5应该存在
+    found = cache.get(5, value);
+    if (!found || value != "five") return false;
     
     return true;
 }
@@ -296,6 +307,76 @@ bool testGetOverload() {
     return true;
 }
 
+// 测试11: 相同频率时的FIFO淘汰策略测试
+bool testSameFrequencyEviction() {
+    LFUCache<int, string> cache(3);
+    
+    // 添加3个缓存项，频率都是1
+    cache.put(1, "one");
+    cache.put(2, "two");
+    cache.put(3, "three");
+    
+    // 不访问任何项，它们的频率都保持为1
+    // 添加第4个项，应该淘汰最先加入的key=1（FIFO）
+    cache.put(4, "four");
+    
+    string value;
+    bool found = cache.get(1, value);
+    if (found) return false;  // key=1应该被淘汰
+    
+    // 验证其他项仍然存在
+    found = cache.get(2, value);
+    if (!found || value != "two") return false;
+    
+    found = cache.get(3, value);
+    if (!found || value != "three") return false;
+    
+    found = cache.get(4, value);
+    if (!found || value != "four") return false;
+    
+    return true;
+}
+
+// 测试12: 频率增长和淘汰的详细场景
+bool testFrequencyGrowthScenario() {
+    LFUCache<int, string> cache(4);
+    
+    // 添加4个缓存项
+    cache.put(1, "one");
+    cache.put(2, "two");
+    cache.put(3, "three");
+    cache.put(4, "four");
+    
+    string value;
+    
+    // 创建不同的访问频率
+    cache.get(1, value); cache.get(1, value); cache.get(1, value); // key=1: freq=4
+    cache.get(2, value); cache.get(2, value);                       // key=2: freq=3
+    cache.get(3, value);                                            // key=3: freq=2
+    // key=4: freq=1（未访问）
+    
+    // 添加新项，应该淘汰频率最低的key=4
+    cache.put(5, "five");
+    
+    bool found = cache.get(4, value);
+    if (found) return false;  // key=4应该被淘汰
+    
+    // 验证其他项都存在且频率正确（通过再次访问验证）
+    found = cache.get(1, value);
+    if (!found || value != "one") return false;
+    
+    found = cache.get(2, value);
+    if (!found || value != "two") return false;
+    
+    found = cache.get(3, value);
+    if (!found || value != "three") return false;
+    
+    found = cache.get(5, value);
+    if (!found || value != "five") return false;
+    
+    return true;
+}
+
 // 性能测试
 void performanceTest() {
     cout << "\n=== 性能测试 ===" << endl;
@@ -339,7 +420,9 @@ int main() {
         {"多线程安全性", testThreadSafety},
         {"KHashLfuCache分片缓存", testKHashLfuCache},
         {"purge功能", testPurgeFunction},
-        {"get方法重载", testGetOverload}
+        {"get方法重载", testGetOverload},
+        {"相同频率FIFO淘汰", testSameFrequencyEviction},
+        {"频率增长详细场景", testFrequencyGrowthScenario}
     };
     
     int passedTests = 0;
